@@ -1,6 +1,6 @@
 # SBG-TIR OTTER Level 3 Elevated Temperature Features (L3 ETF) Data Product Algorithm
 
-Michael S. Ramsey (he/him)<br>
+[Michael S. Ramsey](https://github.com/michaelsramsey) (he/him)<br>
 [mramsey@pitt.edu](mailto:mramsey@pitt.edu)<br>
 University of Pittsburgh
 
