@@ -10,7 +10,7 @@ University of Pittsburgh
 [james.thompson@beg.utexas.edu](mailto:james.thompson@beg.utexas.edu)<br>
 University of Texas Austin
 
-Claudia Corradino<br>
+[Claudia Corradino](https://github.com/clacor89)<br> 
 [claudia.corradino@ingv.it](claudia.corradino@ingv.it)<br>
 National Institute of Geophysics and Volcanology (INGV) – Etna Volcano Observatory
 
