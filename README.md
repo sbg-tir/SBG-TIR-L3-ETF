@@ -22,4 +22,4 @@ The 2017-2027 Decadal Survey for Earth Science and Applications from Space (ESAS
 
 
 _______________________________________________________________________________________________________________________
-<i>This repository will gradually expand to contain the Surface Biology and Geology Thermal Infrared (SBG-TIR) OTTER level 3 Elevated Temperature Features (ETF) data product algorithm.
+<i>This repository will gradually expand to contain the Surface Biology and Geology Thermal Infrared (SBG-TIR) OTTER level 3 elevated temperature features (L3-ETF) data product algorithm.
