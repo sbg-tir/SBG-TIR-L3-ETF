@@ -260,43 +260,31 @@ This is the minimal set of metadata that must be included with each product file
 | WestBoundingCoordinate | LongFloat | 8 | |
 
 *Table 3-1: Standard Product Metadata*
+
 ### 3.2. Product-Specific Metadata
 
 Any additional metadata necessary for describing the product will be recorded in this group.
 
-Table 3-2: Product Specific Metadata
+| **Name** | **Type** | **Size** | **Examples** | 
+| --- | --- | --- | --- |
+| Background_temp | Float | 4 |  |
+| Detections | Int8 | --- | 0 or 1 |
+| Overall_quality | Int16 | 2 |  |
 
-  ------------------------ --------------------- ---------- ------------------------------
-  **Name**                 **Type**              **Size**   **Example**
-
-  **Group**                **L3_ETF_Metadata**              
-
-  Background_temp          Float                 4          
-
-  ETF Detections           Int8                             0 or 1
-
-  Overall_quality          Int16                 2          
-  ------------------------ --------------------- ---------- ------------------------------
+*Table 3-2: Product Specific Metadata*
 
 ## 3.3. Product Data
 
 The product data will be stored in this group. Exact contents and layouts to be defined by each PGE and will conform to the GeoTIFF specifications.
 
-Table 3-3: Product Data Definitions
+| **Field Name** | **Type** | **Unit** | **Field Data** | 
+| --- | --- | --- | --- |
+| ETF Detections | Int8 | N/A | 0 or 1 |
+| ETF Temperatures | Float | Kelvin |  |
+| Global Accuracy | Float | N/A |  |
+| DataQuality | Int8 | N/A |  |
 
-  ------------------------ -------------------------------------- ---------- ------------------------------
-  **Field Name**           **TYPE**                               **UNIT**   **Field Data**
-
-  **GROUP**                **L3_ELEVATED_TEMPERATURE_FEATURES**              
-
-  ETF Detections           Int8                                   None       0 or 1
-
-  ETF Temperatures         Float                                  Kelvin     
-
-  Global Accuracy          Float                                  None       
-
-  DataQuality              Int8                                   None       
-  ------------------------ -------------------------------------- ---------- ------------------------------
+*Table 3-3: Product Data Definitions*
 
 ## 3.4. Product Metadata File
 
