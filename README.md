@@ -15,11 +15,6 @@ University of Texas Austin
 National Institute of Geophysics and Volcanology (INGV) – Etna Volcano Observatory
 
 
-# Abstract
-The 2017-2027 Decadal Survey for Earth Science and Applications from Space (ESAS 2017) was released in January 2018. ESAS 2017 was driven by input from the scientific community and policy experts and provides a strategic vision for the next decade of Earth observation that informs federal agencies responsible for the planning and execution of civilian space-based Earth-system programs in the coming decade. These include the National Aeronautics and Space Administration (NASA), the National Oceanic and Atmospheric Administration (NOAA), and the U.S. Geological Survey (USGS). NASA has, thus far, utilized this document as a guide to inform exploration of new Earth mission concepts that are later considered as can-didates for fully funded missions. High-priority emphasis areas and targeted observables include global-scale Earth science questions related to hydrology, ecosystems, weather, climate, and solid earth. One of the Designated Observables (DO’s) identified by ESAS 2017 was Surface Biology and Geology (SBG) with a goal to acquire concurrent global hyperspectral visible to shortwave infrared (VSWIR; 380–2500 nm) and multispectral midwave and thermal infrared (MWIR: 3–5 μm; TIR: 8–12 μm) image data at high spatial resolution (~30 m in the VSWIR and ~ 60 m in the TIR) at sub-monthly temporal resolution globally. The final sensor characteristics will be determined during the mission formulation phase, but ESAS 2017 provides guidance for a VSWIR instrument with 30–45 m pixel resolution, ≤16 day global revisit, SNR > 400 in the VNIR, SNR > 250 in the SWIR, and 10 nm sampling in the range 380–2500 nm. It also recommends a TIR instrument with more than five channels in 8–12 μm, and at least one channel at 4 μm, ≤60 m pixel resolution, ≤3 day global revisit, and noise equivalent delta temperature (NEdT) ≤0.2 K (NASEM, 2018; Schimel et al., 2020). Alone, SBG will provide a comprehensive global monitoring for multiple scientific disciplines. Complemented with systems like Landsat and Sentinel-2 VSWIR, global change processes with faster than 16-day global change rates can be mapped. Further, complimented with planned TIR systems such as LSTM and TRISHNA, the temporal revisit could be as frequent as 1-day at the equator, making the system excellent for tracking dynamic thermal features and hazards. This document will grow to fully describe the planned Elevated Temperature Features (ETF) product for the SBG TIR data.
-
-
-
 ## 1. Introduction
 
 This is the Product Specification Document (PSD) for Level 3 (L3) Elevated Temperautre Features (ETF) data product of NASA's Surface Biology and Geology -- Thermal Infrared (SBG-TIR) mission. The SBG-TIR L3 ETF product provides elevated temperature features generated from data acquired by the SBG-TIR radiometer instrument according to the ETF algorithm described in the SBG-TIR L3 ETF Algorithm Theoretical Basis Document (ATBD) (D-1000786).
@@ -38,30 +33,57 @@ ETF is applied to the MIR and TIR L1c surface radiance data for the entire land 
 
 The remainder of the document discusses the SBG instrument characteristics, provides background on TIR remote sensing, presents the testing approach for the numerous algorithms considered, gives a full description and background on the chosen ETF algorithm, provides quality assessment, discuss numerical simulation studies and, finally, outlines a validation plan.
 
-## 2. Level 3 ETF Product Overview**
+## 2. Product Overview**
 
 SBG-TIR provides a Level 3 product to identify elevated temperature features. This product will contain layers for surface temperature, temperature uncertainty, and data quality for pixels that are flagged as exhibiting elevated temperature features. This product is intended to be used in the detection and monitoring of wildfire and lava flows.
 
 The L3 gridded products are resampled to a map grid with a fixed 60m pixel size, and are used to create 110x110km tile images following the "Sentinel-2 Tiling Grid". Tiled products are provided in Cloud Optimized GeoTIFF (COG) format (UTM/WGS84). See Section 3 for detailed descriptions of the product.
 
-#3# 3.1.  Level 3 ETF Standard Day, Night, and Low Latency Products**
+### 2.1. Metadata
 
-The L3 ETF detection algorithm will be run during the day and night over land. The "Standard" products are expected to be processed and delivered within 72 hours of their collection. However, a special subset of L3 products will be generated within 24 hours of collection to meet special time-critical science requirements. These "Low Latency" products will be processed using the Low Latency geolocation radiance input only, which may be improved in the standard product. Therefore, the L3 Low Latency product will differ slightly from the subsequent Standard product, and may not be archived after serving their short-term purposes.
+SBG-TIR standards incorporate additional metadata that describe each GeoTIFF Dataset within the GeoTIFF file. Each of these metadata elements appear in an GeoTIFF Attribute that is directly associated with the GeoTIFF Dataset. Wherever possible, these GeoTIFF Attributes employ names that conform to the Climate and Forecast (CF) conventions. 
 
-## 3.2. Level 3 ETF Intermediate and Distributable Products**
+Each SBG product bundle contains two sets of product metadata:
+-   ProductMetadata
+-   StandardMetadata
+
+#### 2.1.1. Standard Metadata
+Each product contains a custom set of `ProductMetadata` attributes, as listed in Table 5. Information on the `StandardMetadata` is included on the [SBG-TIR github landing page](https://github.com/sbg-tir)
+
+#### 2.1.2. Product Metadata
+
+Any additional metadata necessary for describing the product will be recorded in this group.
+
+## 2.2. Level 3 ETF Intermediate and Distributable Products**
 
 The L3 EFT product computes an intermediate background temperature value for thresholding. This value is provided in product metadata accompanying the L3 ETF product.
 
-## 4. Theory and Methodology
+| **Variable** | **Long Name**   |   **Data Type**  |   **Unit** |  **Field Data** |
+| --- | --- | --- | --- | --- |
+|  Detects   |  ETF Detections   |  Int8  |    n/a        0 |
+|  Temp     |   ETF Temperatures  | Float  |                    |            K          NaN |
+|  Accuracy  |  Global Accuracy   | Float  |                   |             n/a        0 |
+|  QC       |   Data Quality   |   Int8     |                      |        n/a        0 |
 
-### 4.1. Mid-wave and Thermal Infrared Remote Sensing Background
+*Table 1: SDSs for the SBG L3 Elevated Temperature Features (ETF) product*
+
+
+## 2.3.  Level 3 ETF Standard Day, Night, and Low Latency Products**
+
+The L3 ETF detection algorithm will be run during the day and night over land. The "Standard" products are expected to be processed and delivered within 72 hours of their collection. However, a special subset of L3 products will be generated within 24 hours of collection to meet special time-critical science requirements. These "Low Latency" products will be processed using the Low Latency geolocation radiance input only, which may be improved in the standard product. Therefore, the L3 Low Latency product will differ slightly from the subsequent Standard product, and may not be archived after serving their short-term purposes.
+
+The ETF product will also be produced as a low latency (LL) product available within 24 hours of data acquisition. All functional parameters of the algorithm described above will remain the same except that LL-ETF will operate on the at-sensor radiance as opposed to the surface radiance. Without atmospheric correction, the uncertainty in retrieved surface temperatures is expected to be higher.
+
+## 3. Theory and Methodology
+
+### 3.1. Mid-wave and Thermal Infrared Remote Sensing Background
 
 The at-sensor measured radiance in the infrared region (3--13 µm) consists of a combination of different terms from surface emission, solar reflection, and atmospheric emission and attenuation. The Earth-emitted radiance is a function of the temperature and emissivity of the surface, which is then attenuated by the atmosphere on its path to the satellite. The emissivity of an isothermal, homogeneous emitter is defined as the ratio of the actual emitted radiance to the radiance emitted from a blackbody at the same thermodynamic temperature [Norman and Becker 1995]. Emissivity is an intrinsic property of the surface material and is an independent measurement from the surface temperature, which varies with irradiance, local atmospheric conditions, time of day, and specific conditions causing elevated temperature (e.g., wildfires, volcanic eruptions, etc.). The emissivity of most natural Earth surfaces varies from ~0.7 to close to 1.0, for the TIR wavelength (8--13 μm) for spatial scales <100 m. Narrowband emissivities less than 0.85 are typical for most desert and semi-arid areas due to the strong quartz absorption feature (Reststrahlen band) between the 8.0 and 9.5 μm, whereas the emissivity of green vegetation and water are generally greater than 0.95 and spectrally flat in the TIR. Dry and senesced vegetation as well as ice and snow can have lower emissivity values in the wavelengths longer than 10 μm.
 
 
 Reflected solar radiation in the mid-wave infrared region is non-negligible for highly reflective surfaces, whereas the same term in the thermal infrared region is generally smaller in magnitude (~10%) than the surface-emitted radiance particularly over highly reflective surfaces and on humid days where atmospheric water vapor content is high. This contribution in both IR regions needs to be taken into account in the atmospheric correction process. However, for high temperature surfaces, the emitted radiance (varying by T^4) dominates all atmospheric terms, which are typically ignored using the radiance-at-sensor values for all calculations. These temperatures are calculated using a simple temperature-emissivity approach that assumes an ε = 1.0 at one of the infrared wavelengths and solving the Plank Equation for the emitted surface temperature.
 
-### 4.2. Infrared Thermal Anomaly Detection
+### 3.2. Infrared Thermal Anomaly Detection
 
 The data from spaceborne sensors have been used to detect and monitor volcanic eruptions and wildfires from the earliest days of the satellite era (e.g., Gawarecki et al., 1965; Williams and Friedman, 1970; Scorer, 1986). These studies focused mostly on hot spot detection and temperature measurements using TIR data. They became ever more complex with the launch of new sensors providing better spatial, temporal, and spectral data. For example, the ability to extract critical information from the subtle phases of precursory activity to the detailed spectral mapping of the erupted products grew exponentially (Ramsey and Harris, 2013).
 
@@ -69,11 +91,11 @@ The ever increasing amount of orbital data has resulted in a wide range of tempo
 
 Whether a thermal anomaly detection algorithm operates by assessing radiance (or temperature) in spectral, spatial, or temporal space, the methods can be divided into four categories: fixed threshold, contextual, temporal, or hybrid. Fixed threshold algorithms are spectrally based and use data for a single pixel to assess whether the radiance (or temperature) in the MIR and/or TIR bands is thermally anomalous. In contrast, contextual algorithms use the difference between a pixel's radiance (or temperature) and that of its surrounding pixels (e.g., "the background temperature") to assess its state. Temporal algorithms operate by comparing a pixel's radiance (or temperature) with the preceding historical values for the same pixel over time. These time series allow typical pixel values for any given time of day and year to be defined, and divergences from the baseline to be statistically assessed. However, by definition, they rely on prior data and become more appropriate with increasing mission durations. More recent algorithms have incorporated aspects of one or more of these three categories and are dubbed hybrid approaches. Many of these algorithms are now benefiting from the application of Artificial Intelligence (AI) models to improve these prior statistical approaches (Amato et al., 2023; Corradino et al., 2022; Corradino et al., 2023; Piscini and Lombardo, 2014).
 
-#### 4.2.1. Spatial Approaches
+#### 3.2.1. Spatial Approaches
 
 Automated thermal anomaly detection algorithms using spatial approaches were developed by the wildfire and volcano communities during the 1990s (e.g., Flasse and Ceccato, 1996; Flynn et al., 1994; Justice and Dowty, 1994; Langaas, 1993; Lee and Tag, 1990). These applied flexible thresholds based upon statistics calculated from pixels in the image region immediately surrounding a target pixel. For example, the fire detection algorithm of Lee and Tag (1990) executed five steps that used AVHRR MIR and TIR data to determine whether the brightness temperature of a target pixel was anomalously elevated above that of its eight neighboring pixels. This spatial approach was the basis of the first automated volcanic hot spot detection algorithm applied in volcanology (Harris et al., 1995), following the methods of Lee and Tag (1990) and Langaas (1993), resulting in the development of the Volcanic Anomaly SofTware (VAST) algorithm (Higgins and Harris, 1997). Initially, VAST was tested using AVHRR data for Etna, Vulcano, Stromboli, and Lipari volcanoes (Harris et al., 1995; Higgins and Harris, 1997), as well as wildfires in Australia (Harris, 1996), and was designed to detect thermally anomalous pixels by comparing the temperature difference (∆T) for each pixel with the mean from its surrounding eight pixels. The algorithm was later adapted to GOES data of Hawai'i (Harris et al., 2001), by highlighting pixels with a ΔT that was greater than the ΔT mean plus 3.3σ for a 5-pixel-wide box surrounding a 10 × 10 pixel target zone. Since the development of VAST, other algorithms have been designed based on the similar principles and operations adopting different criteria for the pixel-wide box localization and dimension and ΔT threshold choices (e.g. Murphy et al., 2011). Many algorithms have been implemented for local-to-regional monitoring purposes including AVHRR-based monitoring the volcanoes of Mexico (Galindo and Dominguez, 2002), Central America (Webley et al., 2008), and Japan (Kaneko et al., 2002).
 
-#### 4.2.2. Spectral Approaches
+#### 3.2.2. Spectral Approaches
 
 Thermal anomaly detection algorithms using a spectral analysis were first developed in the 1980s using AVHRR data to automatically detect wildfires (e.g., Flannigan and Vonder Haar 1986; Kaufman et al. 1990; Kennedy et al. 1994). These rely upon a data from at least two distinct spectral regions where the thermal flux from high temperature source can vary over orders of magnitude (Figure 1). They operate by setting a threshold and highlighting any values that exceeded this threshold. For example, Kaufman et al. (1990) used three thresholds: (1) MIR~T~ ≥ 316 K, (2) ΔT ≥ 10 K, and (3) TIR~T~ \> 250 K to find thermally anomalous pixels. These thresholds ensured that (1) the pixel was hot, (2) a sub-pixel hot spot was present, and (3) the pixel was cloud free. Every subsequent algorithm varies the level of the set thresholds, setting different values depending on the region monitored. These early algorithms performed well but were limited to the specific regions for which they were developed (Justice and Dowty 1994).
 
@@ -81,17 +103,17 @@ A volcano-targeted single-step spectral algorithm was developed by Di Bello et a
 
 Perhaps the most well known and widely used spectral algorithm is MODVOLC (Flynn et al. 2002). It was designed using a limited operational constraint to detect volcanic thermal anomalies on a global scale in MODIS data (Wright et al. 2004). Because of the simplicity of algorithm and the longevity of the MODIS sensors, MODVOLC results have been widely used, contributing to activity reports by the Smithsonian Institute's Global Volcanism Program (GVP), as well as numerous individual volcano studies, for example, Anatahan (Wright et al. 2005), Mt. Belinda (Patrick et al. 2005), Etna (Laiolo et al., 2019), Melanesia (Rothery et al. 2005), Pacaya (Gonzalez-Santana et al., 2022) Stromboli (Ripepe et al. 2005), Fuego (Lyons et al. 2010), and Vanuatu (Coppola et al., 2016b).
 
-#### 4.2.3. Temporal Approaches
+#### 3.2.3. Temporal Approaches
 
 Thermal anomaly detection algorithms using temporal approaches were developed to detect variations in pixel brightness temperature from that of the baseline temperature in long time-series data. These have been effective for a variety of applications including detection of volcanic ash clouds, dust storms, wildland fires, and earthquake-related thermal anomalies (Hua et al., 2016; Jiao et al., 2021). Tramutoli (1998) originally proposed a temporal technique named the Robust AVHRR Technique (RAT) to minimize the effects that different geographical and seasonal conditions have on fixed spatial and spectral algorithms.
 
 Temporal algorithms analyze an archive of data to evaluate how the temperature for a specific pixel changes through time, assessing variation caused by seasonal and atmospheric effects. By comparing the pixel's current temperature to the temperature history of that same pixel, divergence can be detected. Given that exactly the same pixel needs to be considered through time, the technique requires precise, sub-pixel location accuracy, and excellent image-to-image registration (Tramutoli et al., 2001; Pergola and Tramutoli, 2003). AVHRR data for Etna, showed how the method could be used with reflected (AVHRR band 1) data to detect ash clouds, developing an index named the Statistical Normalized Albedo Excess (Pergola et al., 2001). Additionally, the Absolutely Local Index of Change of the Environment (ALICE) that used TIR (AVHRR band 4) data was developed to detect possible thermal anomalies associated with seismic activity (Pergola et al., 2001). Similar techniques were used with MIR (AVHRR band 3B) data to detect lava flow activity on Mt. Etna through application of the ALICE index (Pergola et al., 2004; Di Bello et al., 2004; Pergola et al. 2009; Pergola et al. 2008; Yuhaniz and Vladimirova, 2009).
 
-#### 4.2.4. Hybrid Approaches
+#### 3.2.4. Hybrid Approaches
 
 Combining more than one of these approaches allows the individual limitations associated with each to be minimized. Advanced hybrid algorithms have been developed applying a temporal approach to spatial features (e.g., Ramsey et al., 2023; Koeppen et al., 2011). Other algorithms combine both spectral and spatial principles based on multiple fixed and statistical thresholds such as MIROVA used to identify anomalies in MODIS data (Coppola et al. 2016a; 2020) and HOTSAT used with SEVIRI data (Ganci et al., 2011). More recently, advanced AI techniques have been proposed to replicate the human visual system processing scheme and reduce the errors in statistical approaches to detect thermal anomalies in TIR data. For example, Corradino et al., (2023) used both spectral and spatial information with deep convolutional neural networks (CNNs) to identify thermal anomalies over twenty years at Vulcano, Italy.
 
-### 4.3. Prior Accuracy
+### 3.3. Prior Accuracy
 
 Regardless of the general approach to identifying thermally elevated pixels in an infrared image, every algorithm aims to detect the greatest number of true thermal anomalies by minimizing errors related to false positives. This goal is crucial to perform operationally over a global scale under widely varying conditions. In order to evaluate the algorithm performance, it is fundamental to create a validation and target dataset using ground truth. The latter is created by identifying and manually labelling true anomalies in each testing image by visual inspection. However, defining if a pixel is a true anomaly is not a trivial task, which led past efforts to adopt three main strategies to compute algorithms accuracy.
 
@@ -101,7 +123,12 @@ The second strategy consists in evaluating the algorithm capability of identifyi
 
 The third strategy consists in evaluating the algorithm capability to provide finer scale information about the thermally anomalous area in the image. For example, detecting all the pixels that are true anomalies in each image (high recall) and minimizing false positive detections (high precision). In this case, the algorithm performance is based on four main indices, namely precision, recall, F1-score, and the global accuracy (i.e., the correct prediction of anomaly/background pixels over the total number of pixels). Because the process of creating the target dataset is time consuming for a large dataset, very few hot spot detection algorithms have adopted this strategy. Among them, ASTAD-ML (Corradino et al., 2023) reported precision, recall, F1 score and global accuracy of 87%, 85%, 86%, and 99%, respectively.
 
-## 5. Elevated Temperature Features (ETF) Algorithm Testing
+### 4. Uncertainty Quantification Analysis**
+
+NASA has identified a major need to develop long-term, consistent products valid across multiple missions, with well-defined uncertainty statistics addressing specific Earth-science questions. These products are termed Earth System Data Records (ESDRs).
+
+
+## 5. Cal/Val: Elevated Temperature Features (ETF) Algorithm Testing
 
 The elevated temperature features (ETF) algorithm for SBG must rapidly and accurately detect thermal change in some of Earth's most dynamic processes (i.e., volcanic activity, wildland fires) with a low rate of false positives. Over twenty different algorithms previously developed by the earth science community were considered and a subset of those selected for further testing. This testing approach and the results are first described below with the final ETF algorithm implementation presented in §4.6.
 
@@ -259,28 +286,6 @@ The instrument is anticipated to have an NEΔT of 0.2 K at 300 K, which correspo
 *Table 10: Percentage Change from 0.2 to 1.0 K NEΔT performance metrics*
 
 Overall, the precision, F1 score, recall, and global accuracy of the ASTAD, MIROVA, ASTAD-ML, and ASTAD-NTI-ML algorithms either improved or remained the same (\<10%) as a result of the instrument NEΔT increasing from 0.2 to 1.0 K. On the other hand, the precision, F1 score, and global accuracy of the FIRMS and ECOHOT algorithms reduced dramatically by nearly 100% in most cases as a result of instrument performance decreasing to 1.0 K NEΔT.
-
-### 5.7. Low Latency
-
-The ETF product will also be produced as a low latency (LL) product available within 24 hours of data acquisition. All functional parameters of the algorithm described above will remain the same except that LL-ETF will operate on the at-sensor radiance as opposed to the surface radiance. Without atmospheric correction, the uncertainty in retrieved surface temperatures is expected to be higher.
-
-### 6. Uncertainty Quantification Analysis**
-
-NASA has identified a major need to develop long-term, consistent products valid across multiple missions, with well-defined uncertainty statistics addressing specific Earth-science questions. These products are termed Earth System Data Records (ESDRs).
-
-
-## 6. Scientific Data Set (SDS) Variables
-
-
-| **Variable** | **Long Name**   |   **Data Type**  |   **Unit** |  **Field Data** |
-| --- | --- | --- | --- | --- |
-|  Detects   |  ETF Detections   |  Int8  |    n/a        0 |
-|  Temp     |   ETF Temperatures  | Float  |                    |            K          NaN |
-|  Accuracy  |  Global Accuracy   | Float  |                   |             n/a        0 |
-|  QC       |   Data Quality   |   Int8     |                      |        n/a        0 |
-
-*Table 11: SDSs for the SBG L3 Elevated Temperature Features (ETF) product*
-
 
 ### Acknowledgements
 
